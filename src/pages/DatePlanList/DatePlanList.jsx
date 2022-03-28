@@ -16,9 +16,9 @@ const DatePlanList = (props) => {
 
   const profile = filteredProfile[0]
   
-  // console.log("ownerId: ", ownerId)
-  // console.log("filteredProfile: ", filteredProfile)
-  // console.log('profile: ', profile)
+  console.log("ownerId: ", ownerId)
+  console.log("filteredProfile: ", filteredProfile)
+  console.log('profile: ', profile)
 
   
   return (
@@ -31,8 +31,6 @@ const DatePlanList = (props) => {
             <DatePlan key={datePlan._id} datePlan={datePlan} />
           ))}
       </div>
-
-      
       <Link to="/new">Add Date Plan</Link> 
     </>
   );

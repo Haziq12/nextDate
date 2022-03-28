@@ -48,6 +48,7 @@ const App = () => {
   const handleAddDatePlan = async newDatePlanData => {
     const newDatePlan = await datePlanService.create(newDatePlanData)
     setDatePlans([...datePlans, newDatePlan])
+    navigate('/profiledetail')
   }
 
   const handleEditDatePlan = updatedDatePlan => {
@@ -57,6 +58,7 @@ const App = () => {
         datePlan._id === updatedDatePlan._id ? updatedDatePlan : datePlan
       )
       setDatePlans(newDatePlanArray)
+      navigate('/profiledetail')
     })
   }
 
