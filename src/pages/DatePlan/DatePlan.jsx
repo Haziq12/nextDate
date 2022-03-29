@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const DatePlan = ({datePlan, handleDeleteDatePlan, user, ownerEmail}) => {
+const DatePlan = ({datePlan, handleDeleteDatePlan, user, ownerEmail, ownerId}) => {
 
   return (
     <>
@@ -11,14 +11,14 @@ const DatePlan = ({datePlan, handleDeleteDatePlan, user, ownerEmail}) => {
         <h3>Food:{datePlan.food}</h3>
         <h3>Detail:{datePlan.detail}</h3>
         {/* <h3>Chats:{datePlan.chats}</h3> */}
-        <Link to={`/dateplans/${datePlan._id}`} state={{ datePlan }}>
+        <Link to={`/dateplans/${datePlan._id}`} state={{ ownerId }}>
               Show Date Plan Detail
             </Link>
         {ownerEmail[0] === user.email ? (
           <>
-            <Link to="/edit" state={{ datePlan }}>
+            {/* <Link to="/edit" state={{ datePlan }}>
               Edit Date Plan
-            </Link>
+            </Link> */}
             <button onClick={() => handleDeleteDatePlan(datePlan._id)}>
               Delete
             </button>
