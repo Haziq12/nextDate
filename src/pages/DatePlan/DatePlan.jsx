@@ -14,9 +14,7 @@ const DatePlan = ({datePlan, handleDeleteDatePlan, user, ownerEmail, ownerId}) =
             </Link>
         {ownerEmail[0] === user.email ? (
           <>
-            {/* <Link to="/edit" state={{ datePlan }}>
-              Edit Date Plan
-            </Link> */}
+            
             <button onClick={() => handleDeleteDatePlan(datePlan._id)}>
               Delete
             </button>
