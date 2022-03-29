@@ -2,14 +2,12 @@ import { useState, useRef, useEffect } from "react"
 import { useLocation } from 'react-router-dom'
 
 
-const EditDatePlan = ({datePlan, handleEditDatePlan}) => {
+const EditDatePlan = ({datePlanDetail, handleEditDatePlan}) => {
   const location = useLocation()
   
-  console.log(location)
-  console.log(location.state.datePlan)
-  console.log(handleEditDatePlan)
+	
   
-  const [formData, setFormData] = useState(location.state.datePlan)
+  const [formData, setFormData] = useState(location.state.datePlanDetail)
   const formElement = useRef()
 
 
@@ -32,6 +30,20 @@ const EditDatePlan = ({datePlan, handleEditDatePlan}) => {
     <>
       	<h1>Edit Date Plan</h1>
 			<form autoComplete="off" ref={formElement} onSubmit={handleSubmit}>
+			<div>
+					<label htmlFor="title-input" className="form-label">
+						Title:
+					</label>
+					<input 
+						className="form-control"
+						type="text"
+						id="title-input"
+						name="title"
+            value={formData?.title}
+            onChange={handleChange}
+						required
+					/>
+				</div>
 				<div>
 					<label htmlFor="location-input" className="form-label">
 						Location:
@@ -41,7 +53,7 @@ const EditDatePlan = ({datePlan, handleEditDatePlan}) => {
 						type="text"
 						id="location-input"
 						name="location"
-            value={formData.location}
+            value={formData?.location}
             onChange={handleChange}
 						required
 					/>
@@ -55,7 +67,7 @@ const EditDatePlan = ({datePlan, handleEditDatePlan}) => {
 						className="form-control"
 						id="activity-input"
 						name="activity"
-            value={formData.activity}
+            value={formData?.activity}
             onChange={handleChange}
 						required
 					/>
@@ -69,7 +81,20 @@ const EditDatePlan = ({datePlan, handleEditDatePlan}) => {
 						className="form-control"
 						id="food-input"
 						name="food"
-            value={formData.food}
+            value={formData?.food}
+            onChange={handleChange}
+					/>
+				</div>
+				<div>
+					<label htmlFor="detail-input" className="form-label">
+						Detail:
+					</label>
+					<input 
+						type="textarea"
+						className="form-control"
+						id="detail-input"
+						name="detail"
+            value={formData?.detail}
             onChange={handleChange}
 					/>
 				</div>

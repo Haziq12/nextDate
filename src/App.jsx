@@ -4,14 +4,18 @@ import NavBar from './components/NavBar/NavBar'
 import Signup from './pages/Signup/Signup'
 import Login from './pages/Login/Login'
 import Landing from './pages/Landing/Landing'
-import Profiles from './pages/Profiles/Profile'
+import Profiles from './pages/Profiles/Profiles'
 import ChangePassword from './pages/ChangePassword/ChangePassword'
-import ProfileDetail from './pages/ProfileDetail/ProfileDetail'
 import * as authService from './services/authService'
 import * as profileService from './services/profileService'
 import AddDatePlan from './components/AddDatePlan/AddDatePlan'
 import * as datePlanService from './services/datePlan'
+import * as IcebreakersService from './services/icebreaker'
 import EditDatePlan from './components/EditDatePlan/EditDateplan'
+import ShowDateplan from './pages/ShowDateplan/ShowDateplan'
+import Icebreakers from './pages/Icebreakers/Icebreakers'
+import AddIceBreaker from './components/AddIceBreaker/AddIceBreaker'
+import ShowProfile from './pages/ShowProfile/ShowProfile'
 
 
 
@@ -21,10 +25,23 @@ const App = () => {
   const [profiles, setProfiles] = useState([])
   const [proIdx, setProIdx] = useState(0)
   const [datePlans, setDatePlans] = useState([])
+  const [iceBreakers, setIceBreakers] = useState([])
   
   function handleClick(idx){
     setProIdx(idx)
   }
+
+
+  function findProfileIndex (id) {
+    let profileIndex 
+    profiles.forEach((profile, idx) => {
+      if(profile._id === id) {
+      profileIndex = idx
+      }
+    });
+    setProIdx(profileIndex)
+  }
+
   useEffect(()=> {
     user && profileService.getAllProfiles()
       .then(profiles => setProfiles(profiles))
@@ -35,6 +52,11 @@ const App = () => {
   useEffect(() => {
     datePlanService.getAllDatePlans() 
     .then(datePlans => setDatePlans(datePlans))
+  }, [])
+
+  useEffect(() => {
+    IcebreakersService.getAllIceBreakers() 
+    .then(iceBreakers => setIceBreakers(iceBreakers))
   }, [])
 
   const handleLogout = () => {
@@ -50,7 +72,7 @@ const App = () => {
   const handleAddDatePlan = async newDatePlanData => {
     const newDatePlan = await datePlanService.create(newDatePlanData)
     setDatePlans([...datePlans, newDatePlan])
-    navigate('/profiledetail')
+    navigate(`/profiles/${profiles[proIdx]._id}`)
   }
 
   const handleEditDatePlan = updatedDatePlan => {
@@ -60,16 +82,28 @@ const App = () => {
         datePlan._id === updatedDatePlan._id ? updatedDatePlan : datePlan
       )
       setDatePlans(newDatePlanArray)
-      navigate('/profiledetail')
+      navigate(`/profiles/${profiles[proIdx]._id}`)
     })
   }
 
   const handleDeleteDatePlan = id => {
     datePlanService.deleteOne(id) 
-    .then(deleteDatePlan => setDatePlans(datePlans.filter(datePlan => datePlan._id !== deleteDatePlan._id)))
+    .then(deleteDatePlan => {
+      setDatePlans(datePlans.filter(datePlan => datePlan._id !== deleteDatePlan._id))
+      navigate(`/profiles/${profiles[proIdx]._id}`)
+    })
   }
 
-  console.log(datePlans[0])
+  const handleDeleteIceBreaker = id => {
+    IcebreakersService.deleteOne(id) 
+    .then(deleteIceBreaker => setIceBreakers(iceBreakers.filter(iceBreaker => iceBreaker._id !== deleteIceBreaker._id)))
+  }
+
+  const handleAddIceBreaker = async newIceBreaker => {
+    const IceBreaker = await IcebreakersService.create(newIceBreaker)
+    setDatePlans([...iceBreakers, IceBreaker])
+    navigate('/profiledetail')
+  }
 
   return (
     <>
@@ -88,7 +122,17 @@ const App = () => {
           path="/profiles"
           element={
             user ? (
-              <Profiles profiles={profiles} handleClick={handleClick} />
+              <Profiles profiles={profiles} handleClick={handleClick} datePlans={datePlans} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+        <Route
+          path="/icebreakers"
+          element={
+            user ? (
+              <Icebreakers profiles={profiles} handleClick={handleClick} iceBreakers={iceBreakers} handleDeleteIceBreaker={handleDeleteIceBreaker}/>
             ) : (
               <Navigate to="/login" />
             )
@@ -105,8 +149,8 @@ const App = () => {
           }
         />
         <Route
-          path="/profiledetail"
-          element={<ProfileDetail profiles={profiles} proIdx={proIdx} datePlans={datePlans} user={user} handleDeleteDatePlan={handleDeleteDatePlan}/>}
+          path="/profiles/:id"
+          element={<ShowProfile profiles={profiles} proIdx={proIdx} datePlans={datePlans} user={user} handleDeleteDatePlan={handleDeleteDatePlan} findProfileIndex={findProfileIndex}/>}
         />
 
         <Route
@@ -119,7 +163,16 @@ const App = () => {
         path="/edit"
         element={ user ? <EditDatePlan user={user} handleEditDatePlan={handleEditDatePlan}/> : <Navigate to="/signin" /> }
         />
+        <Route
+        path="/dateplans/:id"
+        element={ user ? <ShowDateplan user={user} datePlans={datePlans} handleEditDatePlan={handleEditDatePlan} handleDeleteDatePlan={handleDeleteDatePlan} profiles={profiles} proIdx={proIdx} findProfileIndex={findProfileIndex}/> : <Navigate to="/signin" /> }
+        />
+        <Route
+        path="/addicebreaker"
+        element={ user ? <AddIceBreaker user={user} handleAddIceBreaker={handleAddIceBreaker} /> : <Navigate to="/signin" /> }
+        />
       </Routes>
+      
     </>
   );
 }
