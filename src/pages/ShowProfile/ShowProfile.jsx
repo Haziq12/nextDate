@@ -31,14 +31,14 @@ const ShowProfile = (props) => {
   return ( 
     <div className='show-profile-body'>
       <div className='profile-box'>
-        <img src={profileDetail.photo ? profileDetail.photo : 'No Image'} alt={'Person'} className="profPic"/>
+        <img src={profileDetail?.photo ? profileDetail.photo : 'No Image'} alt={'Person'} className="profPic"/>
         <div className="profile-info-box">
-        <h1 className='profile-name'>{profileDetail.name}</h1>
-        <h2 className='profile-info'>Location: {profileDetail.address}</h2>
-        <h3 className='profile-info'>Status: {profileDetail.relationshipStatus}</h3>
-        <h3 className='profile-info'>Contact: {profileDetail.contactInfo}</h3>
-        <h3 className='profile-info'>About Me: {profileDetail.aboutMe}</h3>
-        {profileDetail.email === props.user.email ?
+        <h1 className='profile-name'>{profileDetail?.name}</h1>
+        <h2 className='profile-info'>Location: {profileDetail?.address}</h2>
+        <h3 className='profile-info'>Status: {profileDetail?.relationshipStatus}</h3>
+        <h3 className='profile-info'>Contact: {profileDetail?.contactInfo}</h3>
+        <h3 className='profile-info'>About Me: {profileDetail?.aboutMe}</h3>
+        {profileDetail?.email === props.user?.email ?
         <Link to='/editprofile' state={{profileDetail}}>Edit Profile</Link>
         :
         ''
