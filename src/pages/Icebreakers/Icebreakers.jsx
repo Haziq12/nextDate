@@ -4,27 +4,27 @@ import React from "react";
 
 const Icebreakers = (props) => {
   const IceBreakerList = props.iceBreakers.map((icebreaker) => {
-
-    const profId = icebreaker.owner._id;
+    console.log(icebreaker)
+    const profId = icebreaker._id;
     return (
       <React.Fragment key={icebreaker._id}>
         <div className="container">
             <Link to={`/profiles/${profId}`}>
               <img
                 src={
-                  icebreaker.owner.photo ? icebreaker.owner.photo : "No Image"
+                  icebreaker?.owner?.photo ? icebreaker.owner.photo : "No Image"
                 }
                 alt={"Person"}
               />
               <h2 key={profId} className="name">
-                {icebreaker.owner.name}
+                {icebreaker?.owner?.name}
               </h2>
             </Link>
             <div className="info">
               <p>Fun fact: {icebreaker.funFact}</p>
               <p>Question: {icebreaker.question}</p>
             </div>
-            {icebreaker.owner.email === props.user.email ? (
+            {icebreaker?.owner?.email === props.user.email ? (
               <button
                 onClick={() => props.handleDeleteIceBreaker(icebreaker._id)}
                 className="dlt-btn"

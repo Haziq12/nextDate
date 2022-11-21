@@ -9,15 +9,15 @@ async function getAllProfiles() {
   return await res.json()
 }
 
-function getProfileDetails(id) {
-  return fetch(`${BASE_URL}/${id}`, {
+async function getProfileDetails(id) {
+  return await fetch(`${BASE_URL}/${id}`, {
     headers: { Authorization: `Bearer ${tokenService.getToken()}` }
   })
     .then(res => res.json())
 }
 
-function update(editProfile, id) {
-  return fetch(`${BASE_URL}/${id}`, {
+async function update(editProfile, id) {
+  return await fetch(`${BASE_URL}/${id}`, {
     method: 'PUT',
     headers: {
       'Authorization': `Bearer ${tokenService.getToken()}`,
